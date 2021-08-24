@@ -1,8 +1,10 @@
 package Testmaven.mavenproject;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
@@ -45,9 +47,23 @@ public class App
 
 	        // Upload "test.txt" to Dropbox
 	        try (InputStream in = new FileInputStream("tset.txt")) {
-	           FileMetadata metadata = client.files().uploadBuilder("/tset.txt")
+	          FileMetadata metadata = client.files().uploadBuilder("/tset.txt")
 	                .uploadAndFinish(in);
+	           
 	        }
+	        
+	        // download Files from dropbox
+	        try
+	        {
+	        	 String localPath = "D://College//Projects//Ziroh Labs//ZirohDownload//Ziroh Labs Standard NDA_For _Individual.pdf";
+		           OutputStream outputStream = new FileOutputStream(localPath);
+		            FileMetadata metadata = client.files()
+		                   .downloadBuilder("/Ziroh Labs Standard NDA_For _Individual.pdf")
+		                   .download(outputStream);
+		        }
+		        catch(Exception ex)
+		        {
+		        	System.out.print(ex);
+		        }
 	    }
 }
-
