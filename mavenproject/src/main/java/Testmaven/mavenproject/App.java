@@ -47,9 +47,13 @@ public class App
 
 	        // Upload "test.txt" to Dropbox
 	        try (InputStream in = new FileInputStream("tset.txt")) {
-	          FileMetadata metadata = client.files().uploadBuilder("/tset.txt")
+	           FileMetadata metadata = client.files().uploadBuilder("/tset.txt")
 	                .uploadAndFinish(in);
-	           
+	           System.out.println("Uploaded to dropbox Successfully!!!!!!!!!");
+	        }
+	        catch(Exception ex)
+	        {
+	        	System.out.print(ex);
 	        }
 	        
 	        // download Files from dropbox
@@ -60,10 +64,23 @@ public class App
 		            FileMetadata metadata = client.files()
 		                   .downloadBuilder("/Ziroh Labs Standard NDA_For _Individual.pdf")
 		                   .download(outputStream);
-		        }
-		        catch(Exception ex)
-		        {
-		        	System.out.print(ex);
-		        }
+		            System.out.println("Downloaded from dropbox Successfully!!!!!!!!!!!!");
+		    }
+		    catch(Exception ex)
+		    {
+		       System.out.print(ex);
+		    }
+	        
+	        //delete file from the dropbox
+	        
+	        try {
+	        	String FileName="/tset.txt";
+	        	Metadata mb = client.files().delete(FileName);
+	        	System.out.println("Deleted From dropbox Successfully!!!!!!!!!!!!!");
+	        }
+	        catch(Exception ex)
+	        {
+	        	System.out.print(ex);
+	        }
 	    }
 }
