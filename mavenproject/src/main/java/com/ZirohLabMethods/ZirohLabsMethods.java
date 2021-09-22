@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
@@ -22,14 +25,25 @@ public class ZirohLabsMethods {
 	   final DbxRequestConfig config = new DbxRequestConfig("dropbox/testzirohinit", "en_US");
 	   final DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
 	   final String FolderName = "/TestFolder";
-		 public  void  GetConnection(){
-	    		try {
-	    			 FullAccount account = client.users().getCurrentAccount();
-	    		     System.out.println(account.getName().getDisplayName());
+	   
+	   
+	   public Future<String> GetConnection(){
+			  ExecutorService executor = Executors.newSingleThreadExecutor();
+			  try {
+	    			 final FullAccount account = client.users().getCurrentAccount();
+	    			 Future<String> AccName = executor.submit(new Callable<String>() {
+	    		         public String call() {
+	    		             return account.getName().getDisplayName();
+	    		         }});
+	    			 return AccName;
 	    		}
-	    		catch (Exception e)
+	    		catch (final Exception e)
 	    		{
-	    			System.out.print("Error While Conntecting to DropBox:-" + e);
+	    			Future<String> ErrorStr = executor.submit(new Callable<String>() {
+	    		         public String call() {
+	    		             return e.getMessage();
+	    		         }});
+	    			 return ErrorStr;
 	    		}
 	    		
 	    	}
