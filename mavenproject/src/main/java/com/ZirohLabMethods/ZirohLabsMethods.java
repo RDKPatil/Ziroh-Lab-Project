@@ -13,11 +13,15 @@ import java.util.concurrent.Future;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.CreateFolderErrorException;
+import com.dropbox.core.v2.files.DeleteErrorException;
 import com.dropbox.core.v2.files.FileMetadata;
 import com.dropbox.core.v2.files.FolderMetadata;
 import com.dropbox.core.v2.files.ListFolderBuilder;
+import com.dropbox.core.v2.files.ListFolderContinueErrorException;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.files.UploadErrorException;
 import com.dropbox.core.v2.users.FullAccount;
 
 public class ZirohLabsMethods {
@@ -49,38 +53,60 @@ public class ZirohLabsMethods {
 	    	}
 		 
 		 
-		 public void GetList() {
+		 public Future<String> GetList() {
+			 ExecutorService executor = Executors.newSingleThreadExecutor();
 			 try {
-				// Get files and folder metadata from Dropbox root directory
-		        ListFolderResult result = client.files().listFolder("");
-		        while (true) {
-		            for (Metadata metadata : result.getEntries()) {
-		                System.out.println(metadata.getPathLower());
-		            }
+		
+				 final ListFolderResult result = client.files().listFolder(FolderName);
+				 Future<String> fileName = executor.submit(new Callable<String>() {
+				 public String call() {
+			        while (true) {
+			            for (Metadata metadata : result.getEntries()) {
+			                System.out.println(metadata.getPathLower());
+			            }
 
-		            if (!result.getHasMore()) {
-		                break;
-		            }
+			            if (!result.getHasMore()) {
+			                break;
+			            }
 
-		            result = client.files().listFolderContinue(result.getCursor());
-		        }
+			            //result = client.files().listFolderContinue(result.getCursor());
+			        }
+			        return "";
+				 }});
+    			 return fileName;
+		            
+		       
 			 }
-			 catch(Exception e){
-				 System.out.print("Error While Getting folder List From DropBox:-" + e);
+			 catch(final Exception e){
+					Future<String> ErrorStr = executor.submit(new Callable<String>() {
+	    		         public String call() {
+	    		             return e.getMessage();
+	    		         }});
+	    			 return ErrorStr;
 			 }
+			
 		 }
 		 
-		 public  void Upload() {
+		 public  Future<String> Upload() {
 			 // Upload "test.txt" to Dropbox
-			 try (InputStream in = new FileInputStream("tset.txt")) {
-			           FileMetadata metadata = client.files().uploadBuilder("/tset.txt")
-			                .uploadAndFinish(in);
-			           System.out.println("Uploaded to dropbox Successfully!!!!!!!!!");
-			       
+			 ExecutorService executor = Executors.newSingleThreadExecutor();
+			 try  {
+				 		Future<String> uploadFile = executor.submit(new Callable<String>() {
+				 		public String call() throws UploadErrorException, DbxException, IOException {
+				 			InputStream in = new FileInputStream("abhi.txt");
+				 			FileMetadata metadata = client.files().uploadBuilder("/abhi.txt").uploadAndFinish(in);
+				 			
+				 			return "Uploaded to dropbox Successfully!!!!!!!!!";
+				 }});
+				 		return uploadFile;
 			 }
-			 catch(Exception e)
+			 catch(final Exception e)
 			 {
-				 System.out.print("Error While Uploading to DropBox:-" + e);
+				 Future<String> ErrorStr = executor.submit(new Callable<String>() {
+    		         public String call() {
+    		             return e.getMessage();
+    		         }});
+    			 return ErrorStr;
 			 }
 			 
 		 }
@@ -103,29 +129,54 @@ public class ZirohLabsMethods {
 			    }
 		 }
 		 
-		 public  void Delete()
+		 public  Future<String> Delete()
 		 {
 			//delete file from the dropbox
-		        
+			 ExecutorService executor = Executors.newSingleThreadExecutor();
 		        try {
-		        	String FileName="/tset.txt";
-		        	Metadata mb = client.files().delete(FileName);
-		        	System.out.println("Deleted From dropbox Successfully!!!!!!!!!!!!!");
+		        	Future<String> deleteFile = executor.submit(new Callable<String>() {
+		        		public String call() throws DeleteErrorException, DbxException {
+		        			String FileName="/abhi.txt";
+				        	Metadata mb = client.files().delete(FileName);
+				        	
+		        			
+		        		return "Deleted From dropbox Successfully!!!!!!!!!!!!!";
+		        	}});
+		        return deleteFile;
 		        }
-		        catch(Exception ex)
+		        catch(final Exception ex)
 		        {
-		        	System.out.print(ex);
+		        	Future<String> ErrorStr = executor.submit(new Callable<String>() {
+	    		         public String call() {
+	    		             return ex.getMessage();
+	    		         }});
+	    			 return ErrorStr;
 		        }
 		 }
 		 
-		 public  void CreateDir()
+		 public   Future<String> CreateDir()
 		 {
 			// Creating folder on dropbox
-				
-				  try { String FolderName = "/TestFolder"; FolderMetadata FMT =
-				 client.files().createFolder(FolderName);
-				  System.out.println("Folder Created Successfully in drpobox!!!!!!!!!!!!!"); }
-				  catch(Exception ex) { System.out.print(ex); }
+			 	ExecutorService executor = Executors.newSingleThreadExecutor();
+				  try { 
+					  Future<String> createDir = executor.submit(new Callable<String>() {
+						  public String call() throws CreateFolderErrorException, DbxException {
+							  String FolderName = "/AbhiFolder"; 
+							  FolderMetadata FMT =client.files().createFolder(FolderName);
+								     
+							  FMT.getName();
+							  return "Folder Created Successfully in drpobox!!!!!!!!!!!!!";
+						  }});
+					  
+				      return createDir;
+				     }
+				  catch(final Exception ex) {
+					  Future<String> ErrorStr = executor.submit(new Callable<String>() {
+		    		         public String call() {
+		    		             return ex.getMessage();
+		    		         }});
+		    			 return ErrorStr;
+				}
 				 
 		 }
 		 
