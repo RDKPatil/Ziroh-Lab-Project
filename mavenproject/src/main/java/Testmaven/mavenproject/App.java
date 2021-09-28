@@ -11,6 +11,7 @@ import java.util.concurrent.FutureTask;
 import javax.naming.spi.DirStateFactory.Result;
 
 import com.ZirohLabMethods.*;
+import com.ZirohLabMethods.ResultS;
 import com.dropbox.core.DbxApiException;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
@@ -21,78 +22,43 @@ import com.dropbox.core.v2.users.FullAccount;
 
 public class App 
 {
-	public static void main(String args[]) throws DbxException, IOException, InterruptedException, ExecutionException {
-	    
-	    ExecutorService ES = Executors.newSingleThreadExecutor();
-	    
-	    Future<String>Task = new ZirohLabsMethods().GetConnection();
-	    while (!(Task.isDone())) {
-	        System.out.println(
-	          String.format(
-	            "future is %s", 
-	            Task.isDone() ? "done" : "not done"
-	          
-	          )
-	        );
-	        Thread.sleep(300);
+	private static ResultS getTaskResult(FutureTask<ResultS> Result) throws InterruptedException, ExecutionException {
+        new Thread(Result).start();
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(1100);
+            } catch (InterruptedException ignore) {
+            }
+
+            while (!Result.isDone()) {
+                try {
+                    Thread.sleep(500);
+                    if (!Result.isDone()) {
+                        System.out.print("Loading...\n");
+                    }
+                } catch (Exception e) {
+                }
+            }
+        }).start();
+        System.out.println("\nTask started..");
+        return Result.get();
+    }
+	 static void printResult(ResultS result) {
+	        if (result.getErrCode() == 0) {
+	            System.out.println("\n" + result.getShortMsg());
+	        } else {
+	            System.err.println("Task Failed");
+	            System.out.println("Error Message: " + result.getErrMsg());
+	            System.out.println("Description : " + result.getLongMsg());
+	        }
 	    }
-	    
-	    String Name = Task.get();
-	    System.out.print(Name);
+	
+	public static void main(String args[]) throws DbxException, IOException, InterruptedException, ExecutionException {
+		ZirohLabsMethods Z = new ZirohLabsMethods();
 		
-	    //getlist
-		 Future<String>Task1 = new ZirohLabsMethods().GetList();
-		 while(!(Task1.isDone())) { 
-			 System.out.println(
-			String.format( "\nfuture is %s",
-			 Task1.isDone() ? "done" : "not done"
-		 
-		 ) ); Thread.sleep(300); }
-		
-		 String Name1 = Task1.get();
-		 System.out.print(Name1);
-		 
-		//upload
-		 Future<String>Task2 = new ZirohLabsMethods().Upload();
-		 while(!(Task1.isDone())) { 
-			 System.out.println(
-			String.format( "\nfuture is %s",
-			 Task2.isDone() ? "done" : "not done"
-		 
-		 ) ); Thread.sleep(300); }
-		
-		 String Name2 = Task2.get();
-		 System.out.print(Name2);
-		
-		 //delete
-		 
-		 Future<String>Task3 = new ZirohLabsMethods().Delete();
-		 while(!(Task3.isDone())) { 
-			 System.out.println(
-			String.format( "\nfuture is %s",
-			 Task3.isDone() ? "done" : "not done"
-		 
-		 ) ); Thread.sleep(300); }
-		
-		 String Name3 = Task3.get();
-		 System.out.print(Name3);
-		
-		 //createfolder
-		 
-		 Future<String>Task4 = new ZirohLabsMethods().CreateDir();
-		 while(!(Task4.isDone())) { 
-			 System.out.println(
-			String.format( "\nfuture is %s",
-			 Task4.isDone() ? "done" : "not done"
-		 
-		 ) ); Thread.sleep(300); }
-		
-		 String Name4 = Task4.get();
-		 System.out.print(Name4);
-		 
-		 ZirohLabsMethods z=new ZirohLabsMethods();
-		 z.DisplayContents();
-	    
+		ResultS GetConnection = getTaskResult(Z.GetconnectionFuturetask());
+		printResult(GetConnection);
 	  }
 }
 

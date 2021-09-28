@@ -2,19 +2,20 @@ package Testmaven.mavenproject;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.concurrent.FutureTask;
+
 import org.junit.Test;
 
-/**
- * Unit test for simple App.
- */
+
+
+import junit.framework.Assert;
+
 public class AppTest 
 {
-    /**
-     * Rigorous Test :-)
-     */
+
     @Test
-    public void shouldAnswerWithTrue()
+    public void GetConnetion()
     {
-        assertTrue( true );
+     
     }
 }

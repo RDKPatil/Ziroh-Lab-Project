@@ -9,7 +9,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
+import java.util.concurrent.FutureTask;
+import com.ZirohLabMethods.*;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
@@ -24,34 +25,32 @@ import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.files.UploadErrorException;
 import com.dropbox.core.v2.users.FullAccount;
 
-public class ZirohLabsMethods {
+public class ZirohLabsMethods extends ResultS {
 	private  final String ACCESS_TOKEN = "lRImaBLPV4IAAAAAAAAAAfd35gGGIhJQGcgLPs4ZOSJH_QETlpHa7xaA-tnSopLr";
 	   final DbxRequestConfig config = new DbxRequestConfig("dropbox/testzirohinit", "en_US");
 	   final DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
 	   final String FolderName = "/TestFolder";
 	   
-	   
-	   public Future<String> GetConnection(){
-			  ExecutorService executor = Executors.newSingleThreadExecutor();
-			  try {
-	    			 final FullAccount account = client.users().getCurrentAccount();
-	    			 Future<String> AccName = executor.submit(new Callable<String>() {
-	    		         public String call() {
-	    		             return account.getName().getDisplayName();
-	    		         }});
-	    			 return AccName;
+	    public FutureTask<ResultS> GetconnectionFuturetask() {
+	        
+	        ResultS GetConnectionResult = new ResultS();
+
+	    
+	        FutureTask<ResultS> GetconnectionFuturetask = new FutureTask<ResultS>(() -> {
+	          
+	        	try {
+	        		FullAccount account = client.users().getCurrentAccount();
+	        		GetConnectionResult.setErrCode(0);
+	    	        GetConnectionResult.setShortMsg(account.getName().getDisplayName());
+	    			
 	    		}
 	    		catch (final Exception e)
 	    		{
-	    			Future<String> ErrorStr = executor.submit(new Callable<String>() {
-	    		         public String call() {
-	    		             return e.getMessage();
-	    		         }});
-	    			 return ErrorStr;
+	    			GetConnectionResult.setErrCode(1);
 	    		}
-	    		
-	    	}
-		 
+	        }, GetConnectionResult);
+	        return GetconnectionFuturetask;
+	    }
 		 
 		 public Future<String> GetList() {
 			 ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -94,9 +93,9 @@ public class ZirohLabsMethods {
 				 		Future<String> uploadFile = executor.submit(new Callable<String>() {
 				 		public String call() throws UploadErrorException, DbxException, IOException {
 				 			InputStream in = new FileInputStream("abhi.txt");
-				 			FileMetadata metadata = client.files().uploadBuilder("/abhi.txt").uploadAndFinish(in);
-				 			
-				 			return "Uploaded to dropbox Successfully!!!!!!!!!";
+				 			final FileMetadata metadata = client.files().uploadBuilder("/abhi.txt").uploadAndFinish(in);
+				 			String ID = metadata.getId();
+				 			return ID;
 				 }});
 				 		return uploadFile;
 			 }
@@ -111,23 +110,28 @@ public class ZirohLabsMethods {
 			 
 		 }
 		 
-		 public  void Download() {
-			// download Files from dropbox
-		        try
-		        {
-		        	 String localPath = "D://College//Projects//Ziroh Labs//ZirohDownload//Ziroh Labs Standard NDA_For _Individual.pdf";
-			           OutputStream outputStream = new FileOutputStream(localPath);
-			            FileMetadata metadata = client.files()
-			                   .downloadBuilder("/Ziroh Labs Standard NDA_For _Individual.pdf")
-			                   .download(outputStream);
-			            
-			            System.out.println("Downloaded from dropbox Successfully!!!!!!!!!!!!");
-			    }
-			    catch(Exception e)
-			    {
-			    	System.out.print("Error While Downloading File From DropBox:-" + e);
-			    }
-		 }
+		 public  Future<String> Download() {
+			 ExecutorService executor = Executors.newSingleThreadExecutor();
+			 try {
+			 String localPath = "D://College//Projects//Ziroh Labs//ZirohDownload//Ziroh Labs Standard NDA_For _Individual.pdf";
+			 OutputStream outputStream = new FileOutputStream(localPath);
+			 final FileMetadata metadata = client.files().downloadBuilder("/TestFolder/Ziroh Labs Standard NDA_For _Individual.pdf").download(outputStream);
+			 Future<String> Status = executor.submit(new Callable<String>() {
+			 public String call() {
+				 String ID = metadata.getId();
+			 return ID;
+			 }});
+			 return Status;
+			 }
+			 catch(final Exception e)
+			 {
+			 Future<String> ErrorStr = executor.submit(new Callable<String>() {
+			 public String call() {
+			 return e.getMessage();
+			 }});
+			 return ErrorStr;
+			 }
+			 }
 		 
 		 public  Future<String> Delete()
 		 {
@@ -163,9 +167,9 @@ public class ZirohLabsMethods {
 						  public String call() throws CreateFolderErrorException, DbxException {
 							  String FolderName = "/AbhiFolder"; 
 							  FolderMetadata FMT =client.files().createFolder(FolderName);
-								     
-							  FMT.getName();
-							  return "Folder Created Successfully in drpobox!!!!!!!!!!!!!";
+								    
+							  String ID = FMT.getId();
+							  return ID;
 						  }});
 					  
 				      return createDir;
