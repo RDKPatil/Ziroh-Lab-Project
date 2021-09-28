@@ -29,20 +29,19 @@ public class ZirohLabsMethods extends ResultS {
 	private  final String ACCESS_TOKEN = "lRImaBLPV4IAAAAAAAAAAfd35gGGIhJQGcgLPs4ZOSJH_QETlpHa7xaA-tnSopLr";
 	   final DbxRequestConfig config = new DbxRequestConfig("dropbox/testzirohinit", "en_US");
 	   final DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
-	   final String FolderName = "/TestFolder";
+	   final String FolderName = "/AbhiFolder";
 	   
 	    public FutureTask<ResultS> GetconnectionFuturetask() {
 	        
 	        ResultS GetConnectionResult = new ResultS();
 
-	    
 	        FutureTask<ResultS> GetconnectionFuturetask = new FutureTask<ResultS>(() -> {
 	          
 	        	try {
 	        		FullAccount account = client.users().getCurrentAccount();
 	        		GetConnectionResult.setErrCode(0);
-	    	        GetConnectionResult.setShortMsg(account.getName().getDisplayName());
-	    			
+	    	        GetConnectionResult.setShortMsg(account.getAccountId());
+	    	        
 	    		}
 	    		catch (final Exception e)
 	    		{
@@ -61,7 +60,7 @@ public class ZirohLabsMethods extends ResultS {
 				 public String call() {
 			        while (true) {
 			            for (Metadata metadata : result.getEntries()) {
-			                System.out.println(metadata.getPathLower());
+			                System.out.println(metadata.getPathLower() + metadata.getParentSharedFolderId());
 			            }
 
 			            if (!result.getHasMore()) {
@@ -85,7 +84,6 @@ public class ZirohLabsMethods extends ResultS {
 			 }
 			
 		 }
-		 
 		// Upload "test.txt" to Dropbox
 		 public  FutureTask<ResultS> UploadFutureTask(String FilePath, String ParentDirectoryId) {
 			 
@@ -93,10 +91,13 @@ public class ZirohLabsMethods extends ResultS {
 			FutureTask<ResultS> GetconnectionFuturetask = new FutureTask<ResultS>(() -> {
 		          
 	        	try {
-	        		InputStream in = new FileInputStream(FilePath);
-		 		    FileMetadata metadata = client.files().uploadBuilder("/"+FilePath).uploadAndFinish(in);
-		 		    UploadResult.setErrCode(0);
-	    	        UploadResult.setShortMsg(metadata.getId());
+	        		try (InputStream in = new FileInputStream(FilePath)) {
+				           FileMetadata metadata = client.files().uploadBuilder(FolderName + "/" +FilePath )
+				                .uploadAndFinish(in);
+				            UploadResult.setErrCode(0);
+			    	        UploadResult.setShortMsg(metadata.getName());
+	        		}
+		 		   
 	    		}
 	    		catch (final Exception e)
 	    		{
@@ -112,9 +113,9 @@ public class ZirohLabsMethods extends ResultS {
 			 ResultS DownloadResult = new ResultS();
 			 FutureTask<ResultS>downloadfuturetask = new FutureTask<ResultS>(() -> {
 				 try {
-					 String localPath = "D://College//Projects//Ziroh Labs//ZirohDownload//Ziroh Labs Standard NDA_For _Individual.pdf";
+					 String localPath = "D://College//Projects//Ziroh Labs//ZirohDownload//tset.txt";
 					 OutputStream outputStream = new FileOutputStream(localPath);
-					 FileMetadata metadata = client.files().downloadBuilder("/TestFolder/Ziroh Labs Standard NDA_For _Individual.pdf").download(outputStream);
+					 FileMetadata metadata = client.files().downloadBuilder("/TestFolder/tset.txt").download(outputStream);
 					 DownloadResult.setErrCode(0);
 					 DownloadResult.setShortMsg(metadata.getId());
 		    		}
@@ -128,6 +129,30 @@ public class ZirohLabsMethods extends ResultS {
 			 
 			 return downloadfuturetask;
 			 }
+			 
+		
+		 
+		 public FutureTask<ResultS>MoveFileFutureTask(String FileId, String MoveToPath){
+			 ResultS moveResult = new ResultS();
+			 FutureTask<ResultS>movefilefuturetask = new FutureTask<ResultS>(() -> {
+				 try {
+					 String FilePath = "/abhi.txt";
+					 String MovePath = "/AbhiFolder";
+					 FileMetadata metadata =  (FileMetadata)client.files().move(FilePath, MovePath);
+					moveResult.setErrCode(0);
+					 moveResult.setShortMsg(metadata.getId());
+		    		}
+		    		catch (final Exception e)
+		    		{	
+		    			moveResult.setErrCode(1);
+		    			moveResult.setErrMsg(e.toString());
+		    		
+		    		}
+		        }, moveResult);
+			 
+			 return movefilefuturetask;
+			 }
+
 		 
 		 public  Future<String> Delete()
 		 {
@@ -190,7 +215,7 @@ public class ZirohLabsMethods extends ResultS {
 		        			for(Metadata entry:res.getEntries())
 		        			{
 		        				if(entry instanceof FileMetadata) {
-		        					System.out.println("Added file: "+entry.getName());
+		        					System.out.println(entry.getName());
 		        				}
 		        			}
 		        			
