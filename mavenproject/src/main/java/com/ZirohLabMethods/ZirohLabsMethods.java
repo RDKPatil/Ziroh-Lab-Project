@@ -86,51 +86,47 @@ public class ZirohLabsMethods extends ResultS {
 			
 		 }
 		 
-		 public  Future<String> Upload() {
-			 // Upload "test.txt" to Dropbox
-			 ExecutorService executor = Executors.newSingleThreadExecutor();
-			 try  {
-				 		Future<String> uploadFile = executor.submit(new Callable<String>() {
-				 		public String call() throws UploadErrorException, DbxException, IOException {
-				 			InputStream in = new FileInputStream("abhi.txt");
-				 			final FileMetadata metadata = client.files().uploadBuilder("/abhi.txt").uploadAndFinish(in);
-				 			String ID = metadata.getId();
-				 			return ID;
-				 }});
-				 		return uploadFile;
-			 }
-			 catch(final Exception e)
-			 {
-				 Future<String> ErrorStr = executor.submit(new Callable<String>() {
-    		         public String call() {
-    		             return e.getMessage();
-    		         }});
-    			 return ErrorStr;
-			 }
+		// Upload "test.txt" to Dropbox
+		 public  FutureTask<ResultS> UploadFutureTask(String FilePath, String ParentDirectoryId) {
 			 
+			ResultS UploadResult = new ResultS();
+			FutureTask<ResultS> GetconnectionFuturetask = new FutureTask<ResultS>(() -> {
+		          
+	        	try {
+	        		InputStream in = new FileInputStream(FilePath);
+		 		    FileMetadata metadata = client.files().uploadBuilder("/"+FilePath).uploadAndFinish(in);
+		 		    UploadResult.setErrCode(0);
+	    	        UploadResult.setShortMsg(metadata.getId());
+	    		}
+	    		catch (final Exception e)
+	    		{
+	    			UploadResult.setErrCode(1);
+	    			UploadResult.setErrMsg(e.getMessage());
+	    		
+	    		}
+	        }, UploadResult);
+	        return GetconnectionFuturetask; 
 		 }
 		 
-		 public  Future<String> Download() {
-			 ExecutorService executor = Executors.newSingleThreadExecutor();
-			 try {
-			 String localPath = "D://College//Projects//Ziroh Labs//ZirohDownload//Ziroh Labs Standard NDA_For _Individual.pdf";
-			 OutputStream outputStream = new FileOutputStream(localPath);
-			 final FileMetadata metadata = client.files().downloadBuilder("/TestFolder/Ziroh Labs Standard NDA_For _Individual.pdf").download(outputStream);
-			 Future<String> Status = executor.submit(new Callable<String>() {
-			 public String call() {
-				 String ID = metadata.getId();
-			 return ID;
-			 }});
-			 return Status;
-			 }
-			 catch(final Exception e)
-			 {
-			 Future<String> ErrorStr = executor.submit(new Callable<String>() {
-			 public String call() {
-			 return e.getMessage();
-			 }});
-			 return ErrorStr;
-			 }
+		 public  FutureTask<ResultS> DownloadFileFututreTask(String FileId) {
+			 ResultS DownloadResult = new ResultS();
+			 FutureTask<ResultS>downloadfuturetask = new FutureTask<ResultS>(() -> {
+				 try {
+					 String localPath = "D://College//Projects//Ziroh Labs//ZirohDownload//Ziroh Labs Standard NDA_For _Individual.pdf";
+					 OutputStream outputStream = new FileOutputStream(localPath);
+					 FileMetadata metadata = client.files().downloadBuilder("/TestFolder/Ziroh Labs Standard NDA_For _Individual.pdf").download(outputStream);
+					 DownloadResult.setErrCode(0);
+					 DownloadResult.setShortMsg(metadata.getId());
+		    		}
+		    		catch (final Exception e)
+		    		{
+		    			DownloadResult.setErrCode(1);
+		    			DownloadResult.setErrMsg(e.getMessage());
+		    		
+		    		}
+		        }, DownloadResult);
+			 
+			 return downloadfuturetask;
 			 }
 		 
 		 public  Future<String> Delete()
