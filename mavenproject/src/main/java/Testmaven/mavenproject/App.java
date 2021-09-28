@@ -55,10 +55,18 @@ public class App
 	    }
 	
 	public static void main(String args[]) throws DbxException, IOException, InterruptedException, ExecutionException {
-		ZirohLabsMethods Z = new ZirohLabsMethods();
-		
+				ZirohLabsMethods Z = new ZirohLabsMethods();
+		// Connection To the Dropbox
 		ResultS GetConnection = getTaskResult(Z.GetconnectionFuturetask());
 		printResult(GetConnection);
+		
+		// Upload File
+		ResultS UploadFile = getTaskResult(Z.UploadFutureTask("abhi.txt","AABO0V5N1-XwJZd7tcDBrHhdtP9HamgcN6g"));
+		printResult(UploadFile);
+		
+		// Download File
+		ResultS DownloadFile = getTaskResult(Z.DownloadFileFututreTask("oW4J0_hmN3kAAAAAAAAAZA"));
+		printResult(DownloadFile);
 	  }
 }
 
