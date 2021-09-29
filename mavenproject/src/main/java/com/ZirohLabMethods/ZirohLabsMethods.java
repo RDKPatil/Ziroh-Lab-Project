@@ -305,4 +305,25 @@ public class ZirohLabsMethods extends ResultS {
 				 
 				 return copyFolderFutureTask;
 				 }
+	
+			public FutureTask<ResultS>deleteFolderFutureTask(String foldername){
+			 ResultS deleteFolderResult = new ResultS();
+			 FutureTask<ResultS>deleteFolderFutureTask = new FutureTask<ResultS>(() -> {
+				 try {
+					
+					 Metadata FMT= client.files().delete(foldername);
+					 System.out.println("Folder Deleted Successfully in drpobox!!!!!!!!!!!!!"); 
+					 deleteFolderResult.setErrCode(0);
+					 //deleteFolderResult.setShortMsg(metadata.getId());
+		    		}
+		    		catch (final Exception e)
+		    		{	
+		    			deleteFolderResult.setErrCode(1);
+		    			deleteFolderResult.setErrMsg(e.toString());
+		    		
+		    		}
+		        }, deleteFolderResult);
+			 
+			 return deleteFolderFutureTask;
+			 }
 }
