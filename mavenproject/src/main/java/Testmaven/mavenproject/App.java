@@ -69,8 +69,11 @@ public class App
 		printResult(DownloadFile);
 		
 		// Move File
-				ResultS MoveFile = getTaskResult(Z.MoveFileFutureTask("oW4J0_hmN3kAAAAAAAAAZA", "/AbhiFolder"));
-				printResult(MoveFile);
+		ResultS MoveFile = getTaskResult(Z.MoveFileFutureTask("oW4J0_hmN3kAAAAAAAAAZA", "/AbhiFolder"));
+		printResult(MoveFile);
+		// Move Folder
+		ResultS MoveFolder = getTaskResult(Z.MoveFileFutureTask("/TestFolder", "/AbhiFolder/TestFolder"));
+		printResult(MoveFolder);
 	  }
 }
 
