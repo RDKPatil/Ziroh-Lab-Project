@@ -74,6 +74,9 @@ public class App
 		// Move Folder
 		ResultS MoveFolder = getTaskResult(Z.MoveFolderFutureTask("/TestFolder", "/AbhiFolder/TestFolder"));
 		printResult(MoveFolder);
+		//Copy File
+		ResultS copyFile = getTaskResult(Z.copyFileFutureTask("/TestFolder/tset.txt", "/AbhiFolder/tset.txt"));
+		printResult(copyFile);
 	  }
 }
 
