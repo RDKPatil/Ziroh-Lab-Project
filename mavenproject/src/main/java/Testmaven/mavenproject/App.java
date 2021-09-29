@@ -79,12 +79,16 @@ public class App
 		printResult(copyFile);
 		//copy folder
 		
-		 ResultS copyFolder = getTaskResult(Z.copyFolderFutureTask("/TestFolder","/AbhiFolder/TestFolder"));
-		 printResult(copyFolder);
+		ResultS copyFolder = getTaskResult(Z.copyFolderFutureTask("/TestFolder","/AbhiFolder/TestFolder"));
+		printResult(copyFolder);
 		//Delete Folder to Trash
 		
-		  ResultS deleteFolder =getTaskResult(Z.deleteFolderFutureTask("/AbhiFolder"));
-		  printResult(deleteFolder);
+		 ResultS deleteFolder =getTaskResult(Z.deleteFolderFutureTask("/AbhiFolder"));
+		 printResult(deleteFolder);
+		
+		//Delete File to Trash
+		 ResultS deleteFile =getTaskResult(Z.deleteFolderFutureTask("/TestFolder/tset.txt"));
+		 printResult(deleteFile);
 		
 	  }
 }
