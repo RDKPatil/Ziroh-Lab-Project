@@ -81,6 +81,11 @@ public class App
 		
 		 ResultS copyFolder = getTaskResult(Z.copyFolderFutureTask("/TestFolder","/AbhiFolder/TestFolder"));
 		 printResult(copyFolder);
+		//Delete Folder to Trash
+		
+		  ResultS deleteFolder =getTaskResult(Z.deleteFolderFutureTask("/AbhiFolder"));
+		  printResult(deleteFolder);
+		
 	  }
 }
 
