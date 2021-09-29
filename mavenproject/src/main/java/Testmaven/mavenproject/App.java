@@ -77,6 +77,10 @@ public class App
 		//Copy File
 		ResultS copyFile = getTaskResult(Z.copyFileFutureTask("/TestFolder/tset.txt", "/AbhiFolder/tset.txt"));
 		printResult(copyFile);
+		//copy folder
+		
+		 ResultS copyFolder = getTaskResult(Z.copyFolderFutureTask("/TestFolder","/AbhiFolder/TestFolder"));
+		 printResult(copyFolder);
 	  }
 }
 
