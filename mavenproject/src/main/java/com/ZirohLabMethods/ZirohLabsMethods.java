@@ -291,7 +291,7 @@ public class ZirohLabsMethods extends ResultS {
 					 try {
 						
 						 FileMetadata metadata =(FileMetadata)client.files().copy(from,to);
-						 System.out.println("File copied Successfully!!!!");
+						 System.out.println("Folder copied Successfully!!!!");
 						 copyFolderResult.setErrCode(0);
 						 copyFolderResult.setShortMsg(metadata.getId());
 			    		}
