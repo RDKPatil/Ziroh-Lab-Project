@@ -132,14 +132,14 @@ public class ZirohLabsMethods extends ResultS {
 			 
 		
 		 
-		 public FutureTask<ResultS>MoveFileFutureTask(String FileId, String MoveToPath){
+		  public FutureTask<ResultS>MoveFileFutureTask(String FileId, String MoveToPath){
 			 ResultS moveResult = new ResultS();
 			 FutureTask<ResultS>movefilefuturetask = new FutureTask<ResultS>(() -> {
 				 try {
 					 String FilePath = "/abhi.txt";
-					 String MovePath = "/AbhiFolder";
+					 String MovePath = "/AbhiFolder/abhi.txt";
 					 FileMetadata metadata =  (FileMetadata)client.files().move(FilePath, MovePath);
-					moveResult.setErrCode(0);
+					 moveResult.setErrCode(0);
 					 moveResult.setShortMsg(metadata.getId());
 		    		}
 		    		catch (final Exception e)
@@ -151,6 +151,27 @@ public class ZirohLabsMethods extends ResultS {
 		        }, moveResult);
 			 
 			 return movefilefuturetask;
+			 }
+		 
+		 public FutureTask<ResultS>MoveFolderFutureTask(String FileId, String MoveToPath){
+			 ResultS moveFolderResult = new ResultS();
+			 FutureTask<ResultS>movefolderfuturetask = new FutureTask<ResultS>(() -> {
+				 try {
+					 String FilePath = "/TestFolder";
+					 String MovePath = "/AbhiFolder/TestFolder";
+					 FolderMetadata metadata =  (FolderMetadata)client.files().move(FilePath, MovePath);
+					 moveFolderResult.setErrCode(0);
+					 moveFolderResult.setShortMsg(metadata.getId());
+		    		}
+		    		catch (final Exception e)
+		    		{	
+		    			moveFolderResult.setErrCode(1);
+		    			moveFolderResult.setErrMsg(e.toString());
+		    		
+		    		}
+		        }, moveFolderResult);
+			 
+			 return movefolderfuturetask;
 			 }
 
 		 
