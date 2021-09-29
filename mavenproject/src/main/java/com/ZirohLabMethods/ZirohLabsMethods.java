@@ -285,4 +285,24 @@ public class ZirohLabsMethods extends ResultS {
 				 
 	 return copyFileFutureTask;
      }
+			 public FutureTask<ResultS>copyFolderFutureTask(String from,String to){
+				 ResultS copyFolderResult = new ResultS();
+				 FutureTask<ResultS>copyFolderFutureTask = new FutureTask<ResultS>(() -> {
+					 try {
+						
+						 FileMetadata metadata =(FileMetadata)client.files().copy(from,to);
+						 System.out.println("File copied Successfully!!!!");
+						 copyFolderResult.setErrCode(0);
+						 copyFolderResult.setShortMsg(metadata.getId());
+			    		}
+			    		catch (final Exception e)
+			    		{	
+			    			copyFolderResult.setErrCode(1);
+			    			copyFolderResult.setErrMsg(e.toString());
+			    		
+			    		}
+			        }, copyFolderResult);
+				 
+				 return copyFolderFutureTask;
+				 }
 }
