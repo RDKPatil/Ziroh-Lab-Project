@@ -90,6 +90,14 @@ public class App
 		 ResultS deleteFile =getTaskResult(Z.deleteFolderFutureTask("/TestFolder/tset.txt"));
 		 printResult(deleteFile);
 		
+		//Delete File Permanently
+		 ResultS deleteFilePermanently =getTaskResult(Z.deleteFilePermanentlyFutureTask("/TestFolder/tset.txt"));
+		 printResult(deleteFilePermanently);
+		 
+		//Delete Folder Permanently
+		 ResultS deleteFolderPermanently =getTaskResult(Z.deleteFolderPermanentlyFutureTask("/TestFolder"));
+		 printResult(deleteFolderPermanently);
+		
 	  }
 }
 
