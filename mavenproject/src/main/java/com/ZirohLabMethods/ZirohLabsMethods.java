@@ -388,4 +388,102 @@ public class ZirohLabsMethods extends ResultS {
 			 
 			 return deleteFolderPermanentlyFutureTask;
 			 }
+	public FutureTask<ResultS>GetClouldDir(String FolderName)
+			{
+				ResultS getclouddir = new ResultS();
+				 FutureTask<ResultS>getclouddirfuturetask = new FutureTask<ResultS>(() -> {
+					 try {
+						 FOLDER folder = new FOLDER();
+						 List<FOLDER> DirectoriesList = new ArrayList<>();
+		                 List<FILE> FileList = new ArrayList<>();
+						 ListFolderBuilder listFolderBuilder = client.files().listFolderBuilder(FolderName);
+						 ListFolderResult listFolderResult = listFolderBuilder.withRecursive(true).start();
+						 
+						 if(listFolderResult != null)
+						 {
+							 ListFolderResult result = client.files().listFolder("");
+						        while (true) {
+						            for (Metadata dir : result.getEntries()) {
+						                 if(dir instanceof FolderMetadata) {
+						                	 FOLDER Directory = new FOLDER();
+						                	 Directory.setId(((FolderMetadata)dir).getId());
+						                	 Directory.setName(((FolderMetadata)dir).getName());
+						                	 DirectoriesList.add(Directory);
+						                	 
+						                 }
+						            }
+
+						            if (!result.getHasMore()) {
+						                break;
+						            }
+
+						            result = client.files().listFolderContinue(result.getCursor());
+						        }
+							 for(Metadata file:listFolderResult.getEntries())
+			        			{
+			        				if(file instanceof FileMetadata) {
+			        					FILE File = new FILE();
+			                            //seted metadata for each file
+			        					File.setId(((FileMetadata)file).getId());
+			        					File.setName(file.getName());
+			                            File.setFileSize(((FileMetadata)file).getSize());
+			                            File.setLastModified(((FileMetadata)file).getServerModified());
+			                            File.setAbsolutePath(file.getPathDisplay());
+			                            File.setLastAccessed(((FileMetadata)file).getClientModified());
+			                            
+			                            //added to filesList: to return collection of all files of directories
+			                            FileList.add(File);
+			                            
+			                            
+			        				}
+			        			}
+						 }
+						 else
+						 {
+							 getclouddir.setErrCode(0);
+							 getclouddir.setErrMsg("Empty...!");
+						 }
+						 
+						 folder.setSubDirCollection(DirectoriesList.toArray(new FOLDER[0]));
+						 folder.setFileCollection(FileList.toArray(new FILE[0]));
+						 getclouddir.setShortMsg("Cloud directory extracted successfully...");
+						 getclouddir	.setErrCode(0);
+			    		}
+					 
+			    		catch (final Exception e)
+			    		{	
+			    			getclouddir.setErrCode(1);
+			    			getclouddir.setErrMsg(e.toString());
+			    		
+			    		}
+			        }, getclouddir);
+				 
+				 return getclouddirfuturetask;
+			}
+			
+			
+			
+			
+			public FutureTask<ResultS>GetStorageQuota (){
+				 ResultS getstorageresults = new ResultS();
+				 StorageQuota SQ = new StorageQuota();
+				 FutureTask<ResultS>getstroagequota = new FutureTask<ResultS>(() -> {
+					 try {
+						 SpaceUsage SU = client.users().getSpaceUsage();
+						 SQ.setUsed(SU.getUsed());
+						 SQ.setTotalSpace(SU.getAllocation().getIndividualValue().getAllocated());
+						 
+						 getstorageresults.setErrCode(0);
+						 getstorageresults.setShortMsg("StorageQuota Calculated suuccessfully..");
+			    		}
+			    		catch (final Exception e)
+			    		{	
+			    			getstorageresults.setErrCode(1);
+			    			getstorageresults.setErrMsg(e.toString());
+			    		
+			    		}
+			        }, getstorageresults);
+				 
+				 return getstroagequota;
+				 }
 }
