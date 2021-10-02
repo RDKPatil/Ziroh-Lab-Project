@@ -98,6 +98,13 @@ public class App
 		 ResultS deleteFolderPermanently =getTaskResult(Z.deleteFolderPermanentlyFutureTask("/TestFolder"));
 		 printResult(deleteFolderPermanently);
 		
+		//Get Cloud Directory 
+		 ResultS getclouddir =getTaskResult(Z.GetClouldDir("/AbhiFolder"));
+		 printResult(getclouddir);
+		 
+		//Get Storage Data 
+		 ResultS getstoragedata =getTaskResult(Z.GetStorageQuota());
+		 printResult(getstoragedata);
 	  }
 }
 
