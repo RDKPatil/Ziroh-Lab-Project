@@ -346,4 +346,46 @@ public class ZirohLabsMethods extends ResultS {
 			 
 			 return deleteFileFutureTask;
 			 }
+	
+		 public FutureTask<ResultS>deleteFilePermanentlyFutureTask(String filename){
+			 ResultS deleteFilePermanentlyResult = new ResultS();
+			 FutureTask<ResultS>deleteFilePermanentlyFutureTask = new FutureTask<ResultS>(() -> {
+				 try {
+					
+					 client.files().permanentlyDelete(filename);
+					 System.out.println("File has been Deleted Successfully in drpobox!!!!!!!!!!!!!"); 
+					 deleteFilePermanentlyResult.setErrCode(0);
+					 //deleteFolderResult.setShortMsg(metadata.getId());
+		    		}
+		    		catch (final Exception e)
+		    		{	
+		    			deleteFilePermanentlyResult.setErrCode(1);
+		    			deleteFilePermanentlyResult.setErrMsg(e.toString());
+		    		
+		    		}
+		        }, deleteFilePermanentlyResult);
+			 
+			 return deleteFilePermanentlyFutureTask;
+			 }
+		 
+		 public FutureTask<ResultS>deleteFolderPermanentlyFutureTask(String foldername){
+			 ResultS deleteFolderPermanentlyResult = new ResultS();
+			 FutureTask<ResultS>deleteFolderPermanentlyFutureTask = new FutureTask<ResultS>(() -> {
+				 try {
+					
+					 client.files().permanentlyDelete(foldername);
+					 System.out.println("Folder has been Deleted Successfully in drpobox!!!!!!!!!!!!!"); 
+					 deleteFolderPermanentlyResult.setErrCode(0);
+					 //deleteFolderResult.setShortMsg(metadata.getId());
+		    		}
+		    		catch (final Exception e)
+		    		{	
+		    			deleteFolderPermanentlyResult.setErrCode(1);
+		    			deleteFolderPermanentlyResult.setErrMsg(e.toString());
+		    		
+		    		}
+		        }, deleteFolderPermanentlyResult);
+			 
+			 return deleteFolderPermanentlyFutureTask;
+			 }
 }
