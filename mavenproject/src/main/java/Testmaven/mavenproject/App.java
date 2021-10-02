@@ -105,6 +105,14 @@ public class App
 		//Get Storage Data 
 		 ResultS getstoragedata =getTaskResult(Z.GetStorageQuota());
 		 printResult(getstoragedata);
+		
+		//File Sharing 
+		 ResultS getsharefile =getTaskResult(Z.FileSharingFutureTask("/AbhiFolder" , "AABO0V5N1-XwJZd7tcDBrHhdtP9HamgcN6g"));
+		 printResult(getsharefile);
+		 
+		//folder Sharing 
+		 ResultS getfoldershare =getTaskResult(Z.FolderSharingFutureTask("oW4J0_hmN3kAAAAAAAAAZA" , "AABO0V5N1-XwJZd7tcDBrHhdtP9HamgcN6g"));
+		 printResult(getstoragedata);
 	  }
 }
 
