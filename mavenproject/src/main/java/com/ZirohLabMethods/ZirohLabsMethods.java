@@ -486,4 +486,44 @@ public class ZirohLabsMethods extends ResultS {
 				 
 				 return getstroagequota;
 				 }
+	
+				public FutureTask<ResultS>FileSharingFutureTask (String FileName, String MemberID){
+				 ResultS getfilesharingresult = new ResultS();
+				 StorageQuota SQ = new StorageQuota();
+				 FutureTask<ResultS>sharefile = new FutureTask<ResultS>(() -> {
+					 try {
+						 SharedLinkMetadata sharedLinkMetadata = (SharedLinkMetadata) client.sharing().addFileMember(FileName,null);
+						 getfilesharingresult.setErrCode(0);
+						 getfilesharingresult.setShortMsg(sharedLinkMetadata.getId());
+			    		}
+			    		catch (final Exception e)
+			    		{	
+			    			getfilesharingresult.setErrCode(1);
+			    			getfilesharingresult.setErrMsg(e.toString());
+			    		
+			    		}
+			        }, getfilesharingresult);
+				 
+				 return sharefile;
+				 }
+			
+			public FutureTask<ResultS>FolderSharingFutureTask (String FolderID, String MemberID){
+				 ResultS getfoldersharingresult = new ResultS();
+				 StorageQuota SQ = new StorageQuota();
+				 FutureTask<ResultS>sharefolder = new FutureTask<ResultS>(() -> {
+					 try {
+						 client.sharing().addFolderMember(FolderID ,null);
+						 getfoldersharingresult.setErrCode(0);
+						 getfoldersharingresult.setShortMsg("Folder Shared Successfully");
+			    		}
+			    		catch (final Exception e)
+			    		{	
+			    			getfoldersharingresult.setErrCode(1);
+			    			getfoldersharingresult.setErrMsg(e.toString());
+			    		
+			    		}
+			        }, getfoldersharingresult);
+				 
+				 return sharefolder;
+				 }
 }
