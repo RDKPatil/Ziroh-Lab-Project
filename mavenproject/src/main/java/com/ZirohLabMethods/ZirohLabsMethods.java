@@ -85,17 +85,17 @@ public class ZirohLabsMethods extends ResultS {
 			
 		 }
 		// Upload "test.txt" to Dropbox
-		 public  FutureTask<ResultS> UploadFutureTask(String FilePath, String ParentDirectoryId) {
+		 public  FutureTask<FileUploadResult> UploadFutureTask(String FilePath, String ParentDirectoryId) {
 			 
-			ResultS UploadResult = new ResultS();
-			FutureTask<ResultS> GetconnectionFuturetask = new FutureTask<ResultS>(() -> {
+			 FileUploadResult UploadResult = new FileUploadResult();
+			FutureTask<FileUploadResult> GetconnectionFuturetask = new FutureTask<FileUploadResult>(() -> {
 		          
 	        	try {
 	        		try (InputStream in = new FileInputStream(FilePath)) {
 				           FileMetadata metadata = client.files().uploadBuilder(FolderName + "/" +FilePath )
 				                .uploadAndFinish(in);
 				            UploadResult.setErrCode(0);
-			    	        UploadResult.setShortMsg(metadata.getName());
+			    	        UploadResult.setShortMsg(metadata.getId());
 	        		}
 		 		   
 	    		}
