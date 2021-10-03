@@ -61,8 +61,8 @@ public class App
 		printResult(GetConnection);
 		
 		// Upload File
-		ResultS UploadFile = getTaskResult(Z.UploadFutureTask("tset.txt","AABO0V5N1-XwJZd7tcDBrHhdtP9HamgcN6g"));
-		printResult(UploadFile);
+		 ResultS UploadFile = getTaskResult(Z.UploadFutureTask("UploadFile/UploadFile.txt","AABO0V5N1-XwJZd7tcDBrHhdtP9HamgcN6g"));
+		 printResult(UploadFile);
 		
 		// Download File
 		ResultS DownloadFile = getTaskResult(Z.DownloadFileFututreTask("oW4J0_hmN3kAAAAAAAAAZA"));
