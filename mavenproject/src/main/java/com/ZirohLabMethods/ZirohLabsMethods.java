@@ -84,38 +84,38 @@ public class ZirohLabsMethods extends ResultS {
 			 }
 			
 		 }
-		// Upload "test.txt" to Dropbox
-		 public  FutureTask<FileUploadResult> UploadFutureTask(String FilePath, String ParentDirectoryId) {
-			 
-			 FileUploadResult UploadResult = new FileUploadResult();
-			FutureTask<FileUploadResult> GetconnectionFuturetask = new FutureTask<FileUploadResult>(() -> {
-		          
-	        	try {
-	        		try (InputStream in = new FileInputStream(FilePath)) {
-				           FileMetadata metadata = client.files().uploadBuilder(FolderName + "/" +FilePath )
-				                .uploadAndFinish(in);
-				            UploadResult.setErrCode(0);
-			    	        UploadResult.setShortMsg(metadata.getId());
-	        		}
-		 		   
-	    		}
-	    		catch (final Exception e)
-	    		{
-	    			UploadResult.setErrCode(1);
-	    			UploadResult.setErrMsg(e.getMessage());
-	    		
-	    		}
-	        }, UploadResult);
-	        return GetconnectionFuturetask; 
-		 }
-		 
+		// Upload file to Dropbox
+	    public FutureTask<ResultS> UploadFutureTask(String FilePath, String ParentDirectoryId) {
+	    	ResultS UploadResult = new ResultS();
+	    	FutureTask<ResultS> GetconnectionFuturetask = new FutureTask<ResultS>(() -> {
+	    	try {
+	    	InputStream in = new FileInputStream(FilePath);
+	    	FileMetadata metadata = client.files().uploadBuilder("/UploadFile/UploadFile.txt").uploadAndFinish(in);
+	    	System.out.println("Uploaad Successfully in dropbox!!!!!!!!!!!!!!");
+	    	UploadResult.setErrCode(0);
+	    	UploadResult.setShortMsg(metadata.getId());
+	    	}
+	    	catch (final Exception e)
+	    	{
+	    	UploadResult.setErrCode(1);
+	    	UploadResult.setErrMsg(e.getMessage());
+	    	}
+	    	}, UploadResult);
+	    	return GetconnectionFuturetask;
+	    	}
+	    
+		
+//		//Download file
 		 public  FutureTask<ResultS> DownloadFileFututreTask(String FileId) {
 			 ResultS DownloadResult = new ResultS();
 			 FutureTask<ResultS>downloadfuturetask = new FutureTask<ResultS>(() -> {
 				 try {
-					 String localPath = "D://College//Projects//Ziroh Labs//ZirohDownload//tset.txt";
+					 String localPath = "./DownloadFile/UploadFile.txt";
 					 OutputStream outputStream = new FileOutputStream(localPath);
-					 FileMetadata metadata = client.files().downloadBuilder("/TestFolder/tset.txt").download(outputStream);
+					 FileMetadata metadata = client.files().downloadBuilder("/UploadFile/UploadFile.txt").download(outputStream);
+					 
+					
+					 System.out.println("Download file Successfully in drpobox!!!!!!!!!!!!!"); 
 					 DownloadResult.setErrCode(0);
 					 DownloadResult.setShortMsg(metadata.getId());
 		    		}
@@ -129,8 +129,7 @@ public class ZirohLabsMethods extends ResultS {
 			 
 			 return downloadfuturetask;
 			 }
-			 
-		
+		 
 		 
 		  public FutureTask<ResultS>MoveFileFutureTask(String FileId, String MoveToPath){
 			 ResultS moveResult = new ResultS();
