@@ -1,7 +1,5 @@
 # Cloud File System (Dropbox)
 Cloud File System API: DropBox Cloud File System API: DropBox that has all file system functions.
-
-
 The main motive behind this project is to connect and carry out basic operations and some advanced operations on Dropbox using Java Api.
 
 
