@@ -17,7 +17,7 @@ So, now let me introduce our team: -
 #==========================================
 
 Our Project Guide, our Teacher:- 
-1} Profs. Rupali Bhangale Ma'am
+1. Profs. Rupali Bhangale Ma'am
 
 #==========================================
 
