@@ -30,7 +30,7 @@ We have carried out Operattions such as:-
 5. Rename File/Folder
 6. Delete File/Folder(Trash)
 7. Permanently Delete File/Folder
-8. Used Sape & Remaining space(SharedQuots)
+8. Used Sape & Remaining space(SharedQuota)
 9. Share File/Folder
 
 #=============================================
