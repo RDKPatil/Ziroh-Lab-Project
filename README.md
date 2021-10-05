@@ -8,11 +8,11 @@ The main motive behind this project is to connect and carry out basic operations
 #==========================================
 
 So, now let me introduce our team: -
-Mr. Saurabh Palande (Captain)
-Ms. Pushpa Patil
-Ms. Mansi Bansal
-Mr.Rohit Patil
-Mr. Abhijith Panikar
+. Mr. Saurabh Palande (Captain)
+. Ms. Pushpa Patil
+. Ms. Mansi Bansal
+. Mr.Rohit Patil
+. Mr. Abhijith Panikar
 
 #==========================================
 
