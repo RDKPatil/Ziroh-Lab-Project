@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,9 +25,11 @@ import com.dropbox.core.v2.files.ListFolderContinueErrorException;
 import com.dropbox.core.v2.files.ListFolderResult;
 import com.dropbox.core.v2.files.Metadata;
 import com.dropbox.core.v2.files.UploadErrorException;
+import com.dropbox.core.v2.sharing.SharedLinkMetadata;
 import com.dropbox.core.v2.users.FullAccount;
+import com.dropbox.core.v2.users.SpaceUsage;
 
-public class ZirohLabsMethods extends ResultS {
+public class ZirohLabsMethods extends ResultS implements ICloudIO {
 	private  final String ACCESS_TOKEN = "lRImaBLPV4IAAAAAAAAAAfd35gGGIhJQGcgLPs4ZOSJH_QETlpHa7xaA-tnSopLr";
 	   final DbxRequestConfig config = new DbxRequestConfig("dropbox/testzirohinit", "en_US");
 	   final DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
@@ -85,12 +89,13 @@ public class ZirohLabsMethods extends ResultS {
 			
 		 }
 		// Upload file to Dropbox
-	    public FutureTask<ResultS> UploadFutureTask(String FilePath, String ParentDirectoryId) {
+	    public FutureTask<ResultS> UploadFutureTask(String FilePath) {
 	    	ResultS UploadResult = new ResultS();
 	    	FutureTask<ResultS> GetconnectionFuturetask = new FutureTask<ResultS>(() -> {
 	    	try {
-	    	InputStream in = new FileInputStream(FilePath);
-	    	FileMetadata metadata = client.files().uploadBuilder("/UploadFile/UploadFile.txt").uploadAndFinish(in);
+	    		System.out.println(FilePath);
+	    	InputStream in = new FileInputStream("."+FilePath);
+	    	FileMetadata metadata = client.files().uploadBuilder(FilePath).uploadAndFinish(in);
 	    	System.out.println("Uploaad Successfully in dropbox!!!!!!!!!!!!!!");
 	    	UploadResult.setErrCode(0);
 	    	UploadResult.setShortMsg(metadata.getId());
