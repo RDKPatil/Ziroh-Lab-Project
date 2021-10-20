@@ -14,10 +14,7 @@ Cloud File System API: DropBox Cloud File System API: DropBox that has all file 
 
 > Known issues:
 * In DeleteFilePermanently(), DeleteFolderPermanently(), ShareFile() & ShareFolder() purchasing of Business Application is required.
-
-#-------------------------------------------------------------------------------
-
-
+* UpdateFile() task is pending due to no resources available.
 
 #-------------------------------------------------------------------------------
 
@@ -30,6 +27,7 @@ Cloud File System API: DropBox Cloud File System API: DropBox that has all file 
 - [x] 7. Permanently Delete File/Folder(Business App required)
 - [x] 8. Used Space & Remaining space(SharedQuota)
 - [x] 9. Share File/Folder(Business App required)
+- [ ] 10. UpdateFile
 
 #-------------------------------------------------------------------------------
 
