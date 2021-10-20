@@ -1,8 +1,8 @@
-# Cloud File System (Dropbox) #
+> # Cloud File System (Dropbox)
 
-Cloud File System API: DropBox Cloud File System API: DropBox that has all file system functions.
+> Cloud File System API: DropBox Cloud File System API: DropBox that has all file system functions.
 
-#-------------------------------------------------------------------------------
+- - - -
 
 ### _1. Mr. Saurabh Palande_
 ### _2. Ms. Pushpa Patil_
@@ -10,13 +10,13 @@ Cloud File System API: DropBox Cloud File System API: DropBox that has all file 
 ### _4. Mr. Rohit Patil_
 ### _5. Mr. Abhijith Panikar_
 
-#-------------------------------------------------------------------------------
+- - - -
 
 > Known issues:
 * In DeleteFilePermanently(), DeleteFolderPermanently(), ShareFile() & ShareFolder() purchasing of Business Application is required.
 * UpdateFile() task is pending due to no resources available.
 
-#-------------------------------------------------------------------------------
+- - - -
 
 - [x] 1. Upload FIle
 - [x] 2. Download File
@@ -29,8 +29,8 @@ Cloud File System API: DropBox Cloud File System API: DropBox that has all file 
 - [x] 9. Share File/Folder(Business App required)
 - [ ] 10. UpdateFile
 
-#-------------------------------------------------------------------------------
+- - - -
 
-## All Test Cases for Above Operations have been executed
+> All Test Cases for Above Operations have been executed
 
-#-------------------------------------------------------------------------------
+- - - -
