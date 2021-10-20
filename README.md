@@ -11,7 +11,12 @@ Cloud File System API: DropBox Cloud File System API: DropBox that has all file 
 
 #================================================================================
 
-Carried out Operattions:-
+Known issues:
+
+In DeleteFilePermanently(), DeleteFolderPermanently(), ShareFile() & ShareFolder() purchasing of Business Application is *required.
+
+#================================================================================
+
 1. Upload FIle
 2. Download File
 3. Copy File/Folder
