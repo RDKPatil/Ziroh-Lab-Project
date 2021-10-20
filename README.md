@@ -18,9 +18,9 @@ We have carried out Operattions such as:-
 4. Move File/Folder
 5. Rename File/Folder
 6. Delete File/Folder(Trash)
-7. Permanently Delete File/Folder
+7. Permanently Delete File/Folder(Business App required)
 8. Used Space & Remaining space(SharedQuota)
-9. Share File/Folder
+9. Share File/Folder(Business App required)
 
 #=======================================================================================
 
