@@ -11,7 +11,7 @@ Cloud File System API: DropBox Cloud File System API: DropBox that has all file 
 
 #========================================================================================
 
-We have carried out Operattions such as:-
+Carried out Operattions:-
 1. Upload FIle
 2. Download File
 3. Copy File/Folder
